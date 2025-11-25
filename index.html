@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MALLORCA ADVENTURE</title>
+
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+
+<body>
+
+  <!-- UI -->
+  <div id="ui">
+    <div>Puntos: <span id="score">0</span></div>
+    <button id="startBtn">START</button>
+    <div>Vidas: <span id="lives">3</span></div>
+  </div>
+
+  <!-- Área del juego -->
+  <div id="game">
+
+    <!-- Capas del fondo -->
+    <div id="bg-sky"></div>
+    <div id="bg-road"></div>
+    <div id="bg-roadLine"></div>
+    <div id="bg-sand"></div>
+    <div id="bg-sea"></div>
+
+    <!-- Jugador -->
+    <div id="player"></div>
+
+    <!-- Obstáculo de carretera -->
+    <div id="obstacle"></div>
+
+    <!-- Enemigo volador (gaviota) -->
+    <div id="enemy"></div>
+
+  </div>
+
+  <!-- Música opcional -->
+  <audio id="bgMusic" src="assets/audio/theme.mp3" loop></audio>
+
+  <!-- Créditos -->
+  <footer id="credits">
+    Mallorca Adventure · IronHack Web Developer AI 2025 · Anderson Valencia Castaño
+  </footer>
+
+  <script src="js/game.js"></script>
+</body>
+
+</html>
