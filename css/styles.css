@@ -27,7 +27,7 @@ body {
   margin-bottom: 10px;
 }
 
-/* ÁREA DE JUEGO */
+/* Área de juego */
 #game {
   position: relative;
   width: 800px;
@@ -37,20 +37,29 @@ body {
   background: #222;
 }
 
-/* -------------- CAPAS -------------- */
-
-/* 1. Cielo */
 #bg-sky {
   position: absolute;
-  width: 1600px;
-  height: 240px;
+  width: 1024px;
+  height: 238px;
   top: 0;
   left: 0;
-  background: linear-gradient(#c2e9ff, #8ac8e8);
+  background: url("../assets/backgrounds/capa_ciudad.jpg") repeat-x;
+  background-size: contain; /* mantiene pixel art limpio */
   z-index: 1;
 }
 
-/* 2. Carretera */
+#bg-city {
+  position: absolute;
+  width: 800px;
+  height: 1600px;
+  top: 0;
+  left: 0;
+  background: url("../assets/backgrounds/capa_ciudad.png") repeat-x;
+  background-size: contain;
+  image-rendering: pixelated;
+  z-index: 2;
+}
+/* Carretera */
 #bg-road {
   position: absolute;
   width: 1600px;
@@ -61,7 +70,7 @@ body {
   z-index: 2;
 }
 
-/* 2.1 Línea blanca discontinua en el centro de la carretera */
+/* Línea discontinua */
 #bg-roadLine {
   position: absolute;
   width: 1600px;
@@ -70,65 +79,81 @@ body {
   left: 0;
   background: repeating-linear-gradient(
     to right,
-    white 0 30px,
+    #ffffff 0 30px,
     transparent 30px 60px
   );
   z-index: 3;
 }
 
-/* 3. Arena */
+/* Arena */
 #bg-sand {
   position: absolute;
   width: 1600px;
-  height: 40px;
+  height: 20px;
   top: 280px;
   left: 0;
   background: #b67a4b;
   z-index: 2;
 }
 
-/* 4. Mar */
+/* Mar */
 #bg-sea {
   position: absolute;
   width: 1600px;
-  height: 80px;
-  top: 320px;
+  height: 100px;
+  top: 300px;
   left: 0;
   background: #1d32d5;
   z-index: 1;
 }
 
-/* -------------- JUGADOR Y OBJETOS -------------- */
-
-/* Jugador (sobre la carretera) */
+/* Jugador */
 #player {
   position: absolute;
-  width: 40px;
-  height: 60px;
-  background: red;
-  top: 200px;  /* posición base sobre la carretera */
+  width: 64px;
+  height: 64px;
+  background: url("../assets/sprites/player.png") no-repeat center;
+  background-size: contain;
+  image-rendering: pixelated;
+  top: 190px;
   left: 100px;
   z-index: 5;
 }
 
-/* Obstáculo de carretera */
+/* Ciclista - obstáculo suelo */
 #obstacle {
   position: absolute;
-  width: 40px;
-  height: 45px;
-  background: #555;
-  top: 215px; /* ligeramente más abajo que el centro del jugador */
+  width: 64px;
+  height: 64px;
+  background: url("../assets/sprites/cyclist.png") no-repeat center;
+  background-size: contain;
+  image-rendering: pixelated;
+  top: 200px;
   left: 800px;
   z-index: 5;
 }
 
-/* Enemigo volador (gaviota) - pequeño, volando bajo */
+/* Gaviota - enemigo aéreo */
 #enemy {
   position: absolute;
-  width: 40px;
+  width: 64px;
+  height: 48px;
+  background: url("../assets/sprites/seagull.png") no-repeat center;
+  background-size: contain;
+  image-rendering: pixelated;
+  top: 140px;
+  left: 900px;
+  z-index: 5;
+}
+
+/* Fruta */
+#fruit {
+  position: absolute;
+  width: 30px;
   height: 30px;
-  background: yellow;
-  top: 140px;   /* volando por encima del jugador */
+  background: #32cd32;
+  border-radius: 50%;
+  top: 210px;
   left: 900px;
   z-index: 5;
 }

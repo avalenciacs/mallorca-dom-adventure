@@ -1,52 +1,57 @@
-// =====================================================
-// MALLORCA ADVENTURE – Colisiones, Puntos y Vidas
-// =====================================================
+// ===============================
+// Mallorca Adventure - Versión estable
+// ===============================
 
-// --------- DOM ---------
+// DOM
 const game = document.getElementById("game");
 
-const sky = document.getElementById("bg-sky");
-const sea = document.getElementById("bg-sea");
+const bgSky = document.getElementById("bg-sky");
+const bgSea = document.getElementById("bg-sea");
 
 const player = document.getElementById("player");
 const obstacle = document.getElementById("obstacle");
 const enemy = document.getElementById("enemy");
+const fruit = document.getElementById("fruit");
 
 const startBtn = document.getElementById("startBtn");
 const scoreSpan = document.getElementById("score");
 const livesSpan = document.getElementById("lives");
-const bgMusic = document.getElementById("bgMusic");
 
-// --------- ESTADO GLOBAL ---------
+// Estado global
 let isGameRunning = false;
 let score = 0;
 let lives = 3;
 
-// UI
 function updateUI() {
   scoreSpan.textContent = score;
   livesSpan.textContent = lives;
 }
 
-// --------- PARALLAX FONDO ---------
-let skyX = 0;
+// ----------------------
+// PARALLAX
+// ----------------------
+let skyOffset = 0;
 let seaX = 0;
 
-const speedSky = 1.2;
-const speedSea = 0.4;
+const skySpeed = 0.4;
+const seaSpeed = 1.2;
 
 function moveBackground() {
-  skyX -= speedSky;
-  if (skyX <= -800) skyX = 0;
-  sky.style.left = skyX + "px";
+  // Cielo: desplazamiento con background-position
+  skyOffset -= skySpeed;
+  bgSky.style.backgroundPosition = `${skyOffset}px 0`;
 
-  seaX -= speedSea;
-  if (seaX <= -800) seaX = 0;
-  sea.style.left = seaX + "px";
+  // Mar: muevo el div completo
+  seaX -= seaSpeed;
+  if (seaX <= -800) seaX = 0; // 800 = ancho visible
+  bgSea.style.left = seaX + "px";
 }
 
-// --------- JUGADOR ---------
-const GROUND_Y = 200;      // altura real del suelo (coincide con top en CSS)
+// ----------------------
+// JUGADOR
+// ----------------------
+const GROUND_Y = 200; // altura real en píxeles (top)
+
 let playerScreenY = GROUND_Y;
 let playerVelocityY = 0;
 
@@ -87,35 +92,34 @@ function movePlayerHorizontal() {
 }
 
 function jump() {
+  // pequeña tolerancia para evitar problemas con flotantes
   if (Math.abs(playerScreenY - GROUND_Y) < 1) {
     playerVelocityY = jumpForce;
   }
 }
 
 function applyPhysics() {
-  // gravedad
   playerVelocityY += gravity;
-
-  // mover vertical
   playerScreenY += playerVelocityY;
 
-  // suelo con tolerancia mínima
   if (playerScreenY >= GROUND_Y) {
     playerScreenY = GROUND_Y;
     playerVelocityY = 0;
   }
 
-  // aplicar posición en pantalla
   player.style.top = playerScreenY + "px";
 }
-// --------- OBSTÁCULO (carretera) ---------
+
+// ----------------------
+// OBSTÁCULO (CICLISTA)
+// ----------------------
 let obstacleX = 800;
 const obstacleSpeed = 4;
 
 function resetObstacle() {
   obstacleX = 800;
   obstacle.style.left = obstacleX + "px";
-  obstacle.style.top = "215px"; // por si acaso
+  obstacle.style.top = "200px";
 }
 
 function moveObstacleLoop() {
@@ -124,8 +128,7 @@ function moveObstacleLoop() {
   obstacleX -= obstacleSpeed;
   obstacle.style.left = obstacleX + "px";
 
-  // si pasa por el borde izquierdo sin colisión → punto
-  if (obstacleX < -50) {
+  if (obstacleX < -100) {
     score += 1;
     updateUI();
     resetObstacle();
@@ -134,7 +137,9 @@ function moveObstacleLoop() {
   requestAnimationFrame(moveObstacleLoop);
 }
 
-// --------- ENEMIGO VOLADOR (gaviota) ---------
+// ----------------------
+// ENEMIGO AÉREO (GAVIOTA)
+// ----------------------
 let enemyX = 900;
 const ENEMY_Y = 140;
 const enemySpeed = 3;
@@ -151,8 +156,7 @@ function moveEnemyLoop() {
   enemyX -= enemySpeed;
   enemy.style.left = enemyX + "px";
 
-  // si pasa sin colisión → punto
-  if (enemyX < -50) {
+  if (enemyX < -100) {
     score += 1;
     updateUI();
     resetEnemy();
@@ -161,8 +165,35 @@ function moveEnemyLoop() {
   requestAnimationFrame(moveEnemyLoop);
 }
 
-// --------- COLISIONES ---------
+// ----------------------
+// FRUTA (PUNTOS)
+// ----------------------
+let fruitX = 900;
+const FRUIT_Y = 210;
+const fruitSpeed = 3;
 
+function resetFruit() {
+  fruitX = 900;
+  fruit.style.left = fruitX + "px";
+  fruit.style.top = FRUIT_Y + "px";
+}
+
+function moveFruitLoop() {
+  if (!isGameRunning) return;
+
+  fruitX -= fruitSpeed;
+  fruit.style.left = fruitX + "px";
+
+  if (fruitX < -100) {
+    resetFruit();
+  }
+
+  requestAnimationFrame(moveFruitLoop);
+}
+
+// ----------------------
+// COLISIONES
+// ----------------------
 function isOverlapping(a, b) {
   return !(
     a.right < b.left ||
@@ -176,8 +207,9 @@ function checkCollisions() {
   const playerRect = player.getBoundingClientRect();
   const obstacleRect = obstacle.getBoundingClientRect();
   const enemyRect = enemy.getBoundingClientRect();
+  const fruitRect = fruit.getBoundingClientRect();
 
-  // Zona baja del jugador (para colisión con obstáculo)
+  // Hitbox baja (suelo)
   const groundPlayerRect = {
     left: playerRect.left + playerRect.width * 0.2,
     right: playerRect.right - playerRect.width * 0.2,
@@ -185,7 +217,7 @@ function checkCollisions() {
     bottom: playerRect.bottom
   };
 
-  // Zona alta del jugador (para colisión con enemigo aéreo)
+  // Hitbox alta (aire)
   const airPlayerRect = {
     left: playerRect.left + playerRect.width * 0.1,
     right: playerRect.right - playerRect.width * 0.1,
@@ -193,14 +225,22 @@ function checkCollisions() {
     bottom: playerRect.top + playerRect.height * 0.6
   };
 
-  // Colisión con obstáculo suelo
+  // Obstáculo suelo
   if (isOverlapping(groundPlayerRect, obstacleRect)) {
     onHit("ground");
   }
 
-  // Colisión con enemigo aire
+  // Enemigo aéreo
   if (isOverlapping(airPlayerRect, enemyRect)) {
     onHit("air");
+  }
+
+  // Fruta
+  const fruitOverlap = isOverlapping(playerRect, fruitRect);
+  if (fruitOverlap) {
+    score += 5;
+    updateUI();
+    resetFruit();
   }
 }
 
@@ -208,18 +248,17 @@ function onHit(type) {
   lives -= 1;
   updateUI();
 
-  if (type === "ground") {
-    resetObstacle();
-  } else if (type === "air") {
-    resetEnemy();
-  }
+  if (type === "ground") resetObstacle();
+  if (type === "air") resetEnemy();
 
   if (lives <= 0) {
     gameOver();
   }
 }
 
-// --------- GAME LOOP ---------
+// ----------------------
+// GAME LOOP
+// ----------------------
 function gameLoop() {
   if (!isGameRunning) return;
 
@@ -231,28 +270,26 @@ function gameLoop() {
   requestAnimationFrame(gameLoop);
 }
 
-// --------- GAME OVER ---------
 function gameOver() {
   isGameRunning = false;
-  bgMusic.pause();
   alert("GAME OVER");
 }
 
-// --------- START ---------
+// ----------------------
+// START
+// ----------------------
 function startGame() {
   if (isGameRunning) return;
 
-  // reset estado
   isGameRunning = true;
   score = 0;
   lives = 3;
   updateUI();
 
-  // reset posiciones
-  skyX = 0;
+  skyOffset = 0;
   seaX = 0;
-  sky.style.left = "0px";
-  sea.style.left = "0px";
+  bgSky.style.backgroundPosition = "0px 0px";
+  bgSea.style.left = "0px";
 
   playerX = 100;
   playerScreenY = GROUND_Y;
@@ -262,17 +299,11 @@ function startGame() {
 
   resetObstacle();
   resetEnemy();
+  resetFruit();
 
-  // música
-  if (bgMusic) {
-    bgMusic.currentTime = 0;
-    bgMusic.volume = 0.4;
-    bgMusic.play();
-  }
-
-  // iniciar loops
   moveObstacleLoop();
   moveEnemyLoop();
+  moveFruitLoop();
   requestAnimationFrame(gameLoop);
 }
 
