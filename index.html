@@ -1,16 +1,19 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Mallorca Adventure</title>
   <link rel="stylesheet" href="./css/styles.css" />
 </head>
+
 <body>
   <!-- UI -->
   <div id="ui">
     <div>Puntos: <span id="score">0</span></div>
-    <button id="startBtn">START</button>
+    <div>Gaviotas: <span id="birds">0</span></div>
+
     <div>Vidas: <span id="lives">3</span></div>
   </div>
 
@@ -28,6 +31,12 @@
     <div id="obstacle"></div>
     <div id="enemy"></div>
     <div id="fruit"></div>
+    <div id="frisbee"></div>
+
+  </div>
+  
+  <div id="startBtnContainer">
+    <button id="startBtn">START</button>
   </div>
 
   <footer id="credits">
@@ -36,4 +45,5 @@
 
   <script src="./js/game.js"></script>
 </body>
+
 </html>

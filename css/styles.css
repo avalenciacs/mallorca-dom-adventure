@@ -36,6 +36,25 @@ body {
   overflow: hidden;
   background: #222;
 }
+/*Start contenedor*/
+#startBtnContainer {
+  width: 800px;
+  display: flex;
+  justify-content: center;
+  margin: 10px 0;
+}
+/*Start*/
+#startBtn {
+  padding: 8px 20px;
+  font-size: 18px;
+  font-weight: bold;
+  border: 2px solid #fff;
+  background: #000;
+  color: #fff;
+  cursor: pointer;
+  border-radius: 6px;
+}
+
 
 #bg-sky {
   position: absolute;
@@ -48,17 +67,6 @@ body {
   z-index: 1;
 }
 
-#bg-city {
-  position: absolute;
-  width: 800px;
-  height: 1600px;
-  top: 0;
-  left: 0;
-  background: url("../assets/backgrounds/capa_ciudad.png") repeat-x;
-  background-size: contain;
-  image-rendering: pixelated;
-  z-index: 2;
-}
 /* Carretera */
 #bg-road {
   position: absolute;
@@ -119,6 +127,18 @@ body {
   left: 100px;
   z-index: 5;
 }
+#frisbee {
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  background: url("../assets/sprites/frisbee.png") no-repeat center/contain;
+  image-rendering: pixelated;
+  display: none;
+  z-index: 10;
+}
+.hidden {
+  display: none;
+}
 
 /* Ciclista - obstáculo suelo */
 #obstacle {
@@ -136,7 +156,7 @@ body {
 /* Gaviota - enemigo aéreo */
 #enemy {
   position: absolute;
-  width: 64px;
+  width: 68px;
   height: 48px;
   background: url("../assets/sprites/seagull.png") no-repeat center;
   background-size: contain;
@@ -146,13 +166,14 @@ body {
   z-index: 5;
 }
 
-/* Fruta */
+/* Fruta dinámica (banana / apple / water) */
 #fruit {
   position: absolute;
-  width: 30px;
-  height: 30px;
-  background: #32cd32;
-  border-radius: 50%;
+  width: 32px;       /* se sobrescribe desde JS */
+  height: 32px;      /* se sobrescribe desde JS */
+  background-repeat: no-repeat;
+  background-size: contain;
+  image-rendering: pixelated;
   top: 210px;
   left: 900px;
   z-index: 5;
