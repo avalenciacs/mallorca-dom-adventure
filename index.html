@@ -6,42 +6,80 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Mallorca Adventure</title>
   <link rel="stylesheet" href="./css/styles.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
 </head>
 
 <body>
-  <!-- UI -->
-  <div id="ui">
-    <div>Puntos: <span id="score">0</span></div>
-    <div>Gaviotas: <span id="birds">0</span></div>
 
-    <div>Vidas: <span id="lives">3</span></div>
+  <!-- +1 LIFE -->
+  <div id="lifePopup">+1 LIFE</div>
+
+  <!-- GAME OVER SCREEN  -->
+  <div id="gameover-screen" class="hidden">
+    <div class="gameover-box">
+      <h1>GAME OVER</h1>
+      <p>Score: <span id="finalScore">0</span></p>
+      <p>High Score: <span id="finalHighScore">0</span></p>
+      <button id="returnIntroBtn">RETURN TO INTRO</button>
+    </div>
   </div>
 
-  <!-- Área de juego -->
-  <div id="game">
-    <!-- Fondo -->
-    <div id="bg-sky"></div>
-    <div id="bg-road"></div>
-    <div id="bg-roadLine"></div>
-    <div id="bg-sand"></div>
-    <div id="bg-sea"></div>
+  <!-- INTRO VIDEO  -->
+  <div id="introVideoContainer">
+    <div id="introBackground">
+      <video id="introVideo" src="./assets/video/intro.mp4" autoplay muted loop></video>
 
-    <!-- Entidades -->
-    <div id="player"></div>
-    <div id="obstacle"></div>
-    <div id="enemy"></div>
-    <div id="fruit"></div>
-    <div id="frisbee"></div>
+      <div id="introTextWrapper">
+        
+        <div id="clickToStart">CLICK TO CONTINUE</div>
+        <div id="extraLifeInfo">20 Seagulls = +1 EXTRA LIFE</div>
+        
+      </div>
 
-  </div>
-  
-  <div id="startBtnContainer">
-    <button id="startBtn">START</button>
+    </div>
   </div>
 
-  <footer id="credits">
-    Mallorca Adventure · IronHack Web Developer AI 2025 · Anderson Valencia Castaño
-  </footer>
+  <!-- =============================== -->
+  <!-- GAME ROOT  -->
+  <!-- =============================== -->
+  <div id="gameWrapper">
+    <div id="gameRoot">
+
+      <!-- UI -->
+      <div id="ui">
+        <div class="ui-box">Score: <span id="score">0</span></div>
+        <div class="ui-box">Seagulls: <span id="birds">0</span></div>
+        <div class="ui-box">Lives: <span id="lives">3</span></div>
+        <div class="ui-box">High Score: <span id="highScore">0</span></div>
+      </div>
+
+      <!-- GAME AREA -->
+      <div id="game">
+        <div id="bg-sky"></div>
+        <div id="bg-road"></div>
+        <div id="bg-roadLine"></div>
+        <div id="bg-sand"></div>
+        <div id="bg-sea"></div>
+
+        <div id="player"></div>
+        <div id="obstacle"></div>
+        <div id="enemy"></div>
+        <div id="fruit"></div>
+        <img id="frisbee" src="./assets/sprites/frisbee.png" class="projectile hidden">
+      </div>
+
+      <!-- START BUTTON -->
+      <button id="startBtn">START</button>
+
+      <!-- FOOTER -->
+      <footer id="credits">
+        Mallorca Adventure · IronHack Web Developer AI 2025 · Anderson Valencia Castaño
+      </footer>
+
+    </div>
+  </div>
 
   <script src="./js/game.js"></script>
 </body>
